@@ -11,7 +11,7 @@ def dfs(graph, start):
 def solution(n, computers):
 	linked = []
 	num = 0
-	graph = dict(enumerate(computers))
+	graph = dict(enumerate(range(n)))
 	for i in range(n):
 		graph[i] = [idx for idx, v in enumerate(computers[i]) if v == 1 and idx != i]	
 	for i in range(n):
