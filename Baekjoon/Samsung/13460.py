@@ -1,54 +1,32 @@
-def moveBead(board, red, blue, goal, direction, count=0):
-    redStop = False
-    blueStop = False
-    redEnd = False
-    blueEnd = False
-    while (not redStop) or (not blueStop):
-        if direction == 'U':
-            if not redEnd and board[red[0]-1][red[1]] == '#':
-                redStop = True
-            else:
-                if board[red[0]-1][red[1]] == 'B' and board[blue[0]-1][blue[1]] == '#':
-                    blueStop = True
-                    redStop = True
-                else:
-                    red[0] -= 1
-            if not blueEnd and board[blue[0]-1][blue[1]] == '#':
-                blueStop = True
-            else:
-                if board[blue[0]-1][blue[1]] == 'A' and board[red[0]-1][red[1]] == '#':
-                    blueStop = True
-                    redStop = True
-                else:
-                    blue[0] -= 1
-        if board[red[0]][red[1]] == 'O':
-            redEnd = True
-        if board[blue[0]][blue[1]] == 'O':
-            blueEnd = True
-        if count > 10 or (redEnd and blueEnd) or ((not redEnd) and blueEnd):
-            return -1
-        elif redEnd and not blueEnd:
-            return count
-        else:
-            if blueStop and redStop:
-                return 0
+import numpy as np
 
-    print('!',red, blue)
-            
+def solve(board, start, n, m, answers=[], count=0, end=True):
+    if count >= 11:
+        return
+    moves = [(-1,0), (1,0), (0,-1), (0,1)]
+    for i in range(4):
+        mx = moves[i][0]+ start[0]
+        my = moves[i][1] + start[1]
+        if mx < 0 or my < 0 or mx >= n or my >= m:
+            continue
+        if board[mx][my] == '.':
+            continue
+        elif board[mx][my] == '#':
+            solve(board, (mx, my), n, m, answers, count+1, False)
+        elif board[mx][my] == 'O':
+            answers.append(count)
+            break
+    if end:
+        return answers
 
 with open("13460_input.txt") as f:
     for i in range(7):
         n, m = map(int, f.readline().split())
         board = []
-        blue = []
-        red = []
-        goal = []
         for j in range(n):
-            board.append(list(f.readline())[:-1])
+            board.append(list(filter(lambda x: x != "\n", list(f.readline()))))
             if 'R' in board[-1]:
-                red = [j, board[-1].index('R')]
+                red = (j, board[-1].index('R'))
             if 'B' in board[-1]:
-                blue = [j, board[-1].index('B')]
-            if 'O' in board[-1]:
-                goal = [j, board[-1].index('O')]
-        moveBead(board, red, blue, goal, 'U')
+                blue = (j, board[-1].index('B'))
+        print(min(filter(lambda x: x != 0, solve(board, red, n, m))))
