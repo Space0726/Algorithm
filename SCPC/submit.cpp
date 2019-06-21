@@ -24,6 +24,7 @@ int dp(vector<int> *v, int idx) {
 			t = idx + 1;
 		else
 			t = idx / 2;
+		cout << "idx: " << idx << endl;
 		v->at(idx-1) = dp(v, t) + 1;
 		return v->at(idx-1);
 	}
