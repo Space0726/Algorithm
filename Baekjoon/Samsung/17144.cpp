@@ -1,54 +1,92 @@
 #include <iostream>
-#include <algorithm>
 #include <vector>
 
 using namespace std;
-int main(void) {
-	int R, C, T;
-	int temp;
-	
-	freopen("17144_input.txt", "r", stdin);
 
-	cin >> R >> C >> T;
-	vector<vector<int> > v(R, vector<int>());
-	vector<int> up, down;
-	bool isDown=false;
+vector<vector<int> > map;
+vector<int> cleaner;
+int R, C, T;
 
-	for (int i = 0; i < R; i++) {
-		for (int j = 0; j < C; j++) {
-			cin >> temp;
-			if (temp == -1) {
-				if (isDown) {
-					down.push_back(i);
-					down.push_back(j);
-				}
-				else {
-					up.push_back(i);
-					up.push_back(j);
-					isDown=true;
-				}
-			}
-			v[i].push_back(temp);
-		}
-	}
+void spread() {
+    vector<vector<int> > copy_map = map;
+    int dust_cnt, dust_add;
 
-	//TODO:
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++) {
+            dust_cnt = 0;
+            if (map[i][j] > 0) {
+                dust_add = copy_map[i][j] / 5;
+                if (i + 1 < R && map[i+1][j] >= 0) {
+                    map[i+1][j] += dust_add;
+                    dust_cnt++;
+                }
+                if (j + 1 < C) {
+                    map[i][j+1] += dust_add;
+                    dust_cnt++;
+                }
+                if (i - 1 >= 0 && map[i-1][j] >= 0) {
+                    map[i-1][j] += dust_add;
+                    dust_cnt++;
+                }
+                if (j - 1 >= 0 && map[i][j-1] >= 0) {
+                    map[i][j-1] += dust_add;
+                    dust_cnt++;
+                }
+                if (dust_cnt)
+                    map[i][j] -= dust_add * dust_cnt;
+            }
+        }
+    }
+}
 
-	for (vector<int> t: v) {
-		for(int i: t)
-			cout << i << '\t';
-		cout << endl;
-	}
+void clean() {
+    int i, j;
 
-	cout << "Up: ";
-	for (int i: up)
-		cout << i << '\t';
+    for (i = cleaner[0]-2; i >= 0; i--)
+        map[i+1][0] = map[i][0];
+    for (j = 1; j < C; j++)
+        map[0][j-1] = map[0][j];
+    for (i = 1; i <= cleaner[0]; i++)
+        map[i-1][C-1] = map[i][C-1];
+    i--;
+    for (j = C-2; j > 0; j--)
+        map[i][j+1] = map[i][j];
+    map[cleaner[0]][1] = 0;
 
-	cout << endl << "Down: ";
-	for (int i: down)
-		cout << i << '\t';
+    for (i = cleaner[1]+2; i < R; i++)
+        map[i-1][0] = map[i][0];
+    for (j = 1; j < C; j++)
+        map[R-1][j-1] = map[R-1][j];
+    for (i = R-2; i >= cleaner[1]; i--)
+        map[i+1][C-1] = map[i][C-1];
+    i++;
+    for (j = C-2; j > 0; j--)
+        map[i][j+1] = map[i][j];
+    map[cleaner[1]][1] = 0;
+}
 
-	cout << endl;
+int main() {
+    cin >> R >> C >> T;
+    map = vector<vector<int> > (R, vector<int> (C, 0));
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++) {
+            cin >> map[i][j];
+            if (map[i][j] < 0)
+                cleaner.push_back(i);
+        }
+    }
 
-	return 0;
+    for (int i = 0; i < T; i++) {
+        spread();
+        clean();
+    }
+
+    int answer = 0;
+    for (int i = 0; i < R; i++)
+        for (int j = 0; j < C; j++)
+            if (map[i][j] > 0)
+                answer += map[i][j];
+
+    cout << answer << endl;
+    return 0;
 }
