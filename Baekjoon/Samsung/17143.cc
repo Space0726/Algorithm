@@ -1,5 +1,6 @@
 #include <iostream>
-#include <list>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -8,38 +9,88 @@ struct shark {
     int velo;
     int dir;
     int size;
+    
+    bool operator==(const shark &other) const {
+        if (other.r == this->r && other.c == this->c && other.velo == this->velo && other.dir == this->dir && other.size == this->size)
+            return true;
+        return false;
+    }
 };
 
-list<shark> sharks;
+vector<shark> sharks;
+vector<vector<shark*> > sea;
 int R, C, M;
+int dy[4] = {-1, 1, 0, 0};
+int dx[4] = {0, 0, 1, -1};
 
-void print() {
-    for (const auto &s: sharks) {
-        cout << "r: " << s.r << ", c: " << s.c << ", velo: " << s.velo;
-        cout << ", dir: " << s.dir << ", size: " << s.size << endl;
+void print_sea() {
+    for (const auto &a: sea) {
+        for (const auto &b: a) {
+            if (b != nullptr)
+                cout << b->size << " ";
+            else
+                cout << "0 ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+void print_sharks() {
+    for (const auto &shark: sharks)
+        cout << shark.size << " ";
+    cout << endl << endl;
+}
+
+void set_sea() {
+    for (auto &s: sea)
+        for (auto &t: s)
+            t = nullptr;
+    for (auto s = sharks.begin(); s != sharks.end(); s++)
+        sea[s->r][s->c] = &(*s);
+}
+
+int catch_shark(int t) {
+    shark *temp;
+    for (int i = 0; i < C; i++) {
+        temp = sea[i][t];
+        if (temp != nullptr) {
+            int size = temp->size;
+            sharks.erase(remove(sharks.begin(), sharks.end(), *temp));
+            return size;
+        }
+    }
+}
+
+void move() {
+    for (shark &s: sharks) {
+        // TODO: Move sharks
     }
 }
 
 int main() {
     freopen("17143_input.txt", "r", stdin);
     cin >> R >> C >> M;
-    shark t;
+    sea = vector<vector<shark*> > (R, vector<shark*> (C, nullptr));
 
     for (int i = 0; i < M; i++) {
+        shark t;
         cin >> t.r >> t.c >> t.velo >> t.dir >> t.size;
+        t.r--;
+        t.c--;
+        t.dir--;
         sharks.push_back(t);
     }
 
-    print();
-    shark *rm;
-    for (shark s: sharks)
-        if (s.size == 5)
-            rm = &s;
-    sharks.remove(rm);
-    cout << endl;
-    print();
+    int answer = 0;
+    for (int t = 0; t < C; t++) {
+        set_sea();
+        answer += catch_shark(t);
+        print_sea();
+        print_sharks();
+    }
 
-    print();
+    cout << answer << endl;
 
     return 0;
 }

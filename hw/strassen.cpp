@@ -88,7 +88,8 @@ void mat_join(
 
 void strassen(int n, vector<vector<int> > A, vector<vector<int> > B, vector<vector<int> > &C)
 {
-    if (n <= 1)
+    // Normal matrix multiplication
+    if (n <= 1)  // threshold = 1
     {
         for (int i = 0; i < n; i++)
         {
@@ -101,7 +102,7 @@ void strassen(int n, vector<vector<int> > A, vector<vector<int> > B, vector<vect
             }
         }
     }
-    else
+    else  // Strassen's matrix multiplication
     {
         int half = n / 2;
 
@@ -125,13 +126,13 @@ void strassen(int n, vector<vector<int> > A, vector<vector<int> > B, vector<vect
         mat_subdiv(A, A11, A12, A21, A22);
         mat_subdiv(B, B11, B12, B21, B22);
 
-        strassen(n / 2, mat_sum(A11, A22), mat_sum(B11, B22), M1);
-        strassen(n / 2, mat_sum(A21, A22), B11, M2);
-        strassen(n / 2, A11, mat_sub(B12, B22), M3);
-        strassen(n / 2, A22, mat_sub(B21, B11), M4);
-        strassen(n / 2, mat_sum(A11, A12), B22, M5);
-        strassen(n / 2, mat_sub(A21, A11), mat_sum(B11, B12), M6);
-        strassen(n / 2, mat_sub(A12, A22), mat_sum(B21, B22), M7);
+        strassen(half, mat_sum(A11, A22), mat_sum(B11, B22), M1);
+        strassen(half, mat_sum(A21, A22), B11, M2);
+        strassen(half, A11, mat_sub(B12, B22), M3);
+        strassen(half, A22, mat_sub(B21, B11), M4);
+        strassen(half, mat_sum(A11, A12), B22, M5);
+        strassen(half, mat_sub(A21, A11), mat_sum(B11, B12), M6);
+        strassen(half, mat_sub(A12, A22), mat_sum(B21, B22), M7);
 
         mat_join(mat_sum(mat_sub(mat_sum(M1, M4), M5), M7), 
                  mat_sum(M3, M5), mat_sum(M2, M4),
@@ -154,11 +155,14 @@ void print_matrix(vector<vector<int> > &M)
 int main()
 {
     int n;
+    cout << "N: ";
     cin >> n;
+
     vector<vector<int> > A(n, vector<int>(n, 0));
     vector<vector<int> > B(n, vector<int>(n, 0));
     vector<vector<int> > C(n, vector<int>(n, 0));
 
+    cout << endl << "Type A:" << endl;
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
@@ -167,6 +171,7 @@ int main()
         }
     }
 
+    cout << endl << "Type B:" << endl;
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
@@ -176,6 +181,7 @@ int main()
     }
 
     strassen(n, A, B, C);
+    cout << endl << "Result:" << endl;
     print_matrix(C);
 
     return 0;
