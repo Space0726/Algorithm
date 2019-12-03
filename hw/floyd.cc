@@ -1,12 +1,16 @@
 #include <iostream>
 #include <vector>
+#define INF 0xFFFF    // for infinity value
 
 using namespace std;
 void print_vector(vector<vector<int>> v)
 {
-    for (const auto &i: v) {
+    for (const auto &i: v)
+    {
         for (const auto &j: i)
+        {
             cout << j << " ";
+        }
         cout << endl;
     }
 }
@@ -46,7 +50,6 @@ void floyd2(
 
 void path(int q, int r, vector<vector<int>> &P)
 {
-    cout << "path: " << q << ", " << r << endl;
     if (P[q-1][r-1] != 0)
     {
         path(q, P[q-1][r-1], P);
@@ -71,20 +74,29 @@ int main()
         for (int j = 0; j < n; j++)
         {
             cin >> W[i][j];
+            if (W[i][j] == -1)
+            {
+                W[i][j] = INF;
+            }
         }
     }
 
     floyd2(n, W, D, P);
-    cout << "P:" << endl;
-    print_vector(P);
-    cout << endl;
 
     int q, r;
     cout << "Type q, r: ";
     cin >> q >> r;
 
-    path(q, r, P);
+    cout << endl << "Output D: " << endl;
+    print_vector(D);
+
+    cout << endl << "Output P: " << endl;
+    print_vector(P);
     cout << endl;
+
+    cout << "Shortest path of q to r: v" << q;
+    path(q, r, P);
+    cout << " v" << r << endl;
 
     return 0;
 }
