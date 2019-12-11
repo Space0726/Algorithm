@@ -17,7 +17,11 @@ void sum_of_subsets(int i, int weight, int total)
     if (promising(i, weight, total))
     {
         if (weight == W)
-            cout << include[1]; // through include[i];
+        {
+            for (int idx = 0; idx <= i; idx++)
+                cout << include[idx] << " ";
+            cout << endl;
+        }
         else
         {
             include[i+1] = true;
@@ -33,15 +37,18 @@ int main()
     cout << "Type n, W: ";
     cin >> n >> W;
 
-    w = vector<int> (n);
-    include = vector<bool> (n);
-    for (int i = 0; i < n; i++)
-        cout << include[i];
+    w = vector<int>(n);
+    include = vector<bool>(n);
+
+    int total = 0;
     cout << "Type weights: ";
     for (int i = 0; i < n; i++)
+    {
         cin >> w[i];
+        total += w[i];
+    }
 
-    sum_of_subsets(0, 0, 0);
+    sum_of_subsets(-1, 0, total);
 
     return 0;
 }
