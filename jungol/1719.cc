@@ -11,8 +11,8 @@ int main() {
         switch(m) {
         case 1:
             for (i = 0; i < n; i++) {
-                for (j = 0; j < n; j++) {
-                    if (i >= (n/2 >= j ? n : n-j))
+                for (j = 0; j <= n/2; j++) {
+                    if (j <= (n/2 >= i ? i : n-1-i))
                         putchar('*');
                     else
                         putchar(' ');
@@ -21,10 +21,37 @@ int main() {
             }
             break;
         case 2:
+            for (i = 0; i < n; i++) {
+                for (j = n/2; j < n; j++) {
+                    if (j >= (n/2 >= i ? n-1-i : i))
+                        putchar('*');
+                    else
+                        putchar(' ');
+                }
+                putchar('\n');
+            }
             break;
         case 3:
+            for (i = 0; i < n; i++) {
+                for (j = 0; j < n; j++) {
+                    if (n/2 >= i ? (i <= j && j <= n-1-i) : (n-1-i <= j && j <= i))
+                        putchar('*');
+                    else
+                        putchar(' ');
+                }
+                putchar('\n');
+            }
             break;
         case 4:
+            for (i = 0; i < n; i++) {
+                for (j = 0; j < n; j++) {
+                    if (n/2 >= i ? (i <= j && j <= n/2) : (n/2 <= j && j <= i))
+                        putchar('*');
+                    else
+                        putchar(' ');
+                }
+                putchar('\n');
+            }
             break;
         }
     }
