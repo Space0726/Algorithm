@@ -4,11 +4,11 @@
 using namespace std;
 
 vector<vector<int>> edges;
+vector<vector<bool>> visited;
 
 bool dfs(int node) {
     if (edges[0][node] == 99 || edges[1][node] == 99)
         return true;
-    printf("%d %d %d\n", node, edges[0][node], edges[1][node]);
     if (edges[0][node] != -1)
         if (dfs(node+1))
             return true;
@@ -24,6 +24,7 @@ int main() {
         int test_case, num, i, j, x, y;
         scanf("%d %d", &test_case, &num);
         edges = vector<vector<int>>(2, vector<int>(100, -1));
+        visited = vector<vector<bool>>(100, vector<bool>(100, false));
         for (i = 0; i < num; i++) {
             scanf(" %d %d", &x, &y);
             if (edges[0][x] == -1)
