@@ -1,70 +1,65 @@
 #include <cstdio>
 #include <vector>
+#include <string>
 
 using namespace std;
 
-struct node {
-    int val;
-    char op;
-    node *left;
-    node *right;
-    node(int val, char op, node *left, node *right) {
-        this->val = val;
-        this->op = op;
-        this->left = left;
-        this->right = right;
-    }
-};
-
-vector<node> stack;
+vector<string> stack;
 
 int calc_stack() {
-    int x, y;
-    vector<node> buf;
-    while (true) {
-        node t = *(stack.end());
+    int ret;
+    vector<string> buf;
+    string ele, x, y;
+
+    while (stack.empty()) {
+        ele = *stack.end();
         stack.pop_back();
-        if (t.op == '+') {
-            x = buf.end()->val;
+        if (ele[0] == '+') {
+            x = *buf.end();
             buf.pop_back();
-            y = buf.end()->val;
+            y = *buf.end();
             buf.pop_back();
-            stack.push_back(node(x + y, 0, NULL, NULL));
-        } else if (t.op == '*') {
-            x = buf.end()->val;
+            stack.push_back(to_string(atoi(x.c_str()) + atoi(y.c_str())));
+        } else if (ele[0] == '*') {
+            x = *buf.end();
             buf.pop_back();
-            y = buf.end()->val;
+            y = *buf.end();
             buf.pop_back();
-            stack.push_back(node(x * y, 0, NULL, NULL));
+            stack.push_back(to_string(atoi(x.c_str()) * atoi(y.c_str())));
         } else {
-            buf.push_back(t);
+            buf.push_back(ele);
         }
-        if (stack.empty())
-            return t.val;
     }
+
+    return ret;
 }
 
-void preorder_travesal(node *root) {
-    stack.push_back(*root);
-    if (root->left != NULL)
-        preorder_travesal(root->left);
-    if (root->right != NULL)
-        preorder_travesal(root->right);
+void fill_stack(string str) {
+    for (int i = 0; i < str.length; i++) {
+        if (str[i] == '(') {
+            ;
+        }
+        else if (str[i] == ')') {
+            ;
+        }
+        else if (str[i] == '+' || str[i] == '*') {
+            ;
+        }
+        else {
+            ;
+        }
+    }
 }
 
 int main() {
-    node l5 = node(5, 0, NULL, NULL);
-    node r5 = node(4, 0, NULL, NULL);
-    node l4 = node(6, 0, NULL, NULL);
-    node r4 = node(-1, '+', &l5, &r5);
-    node l3 = node(-1, '*', &l4, &r4);
-    node r3 = node(3, 0, NULL, NULL);
-    node l2 = node(7, 0, NULL, NULL);
-    node r2 = node(-1, '+', &l3, &r3);
-    node root = node(-1, '+', &l2, &r2);
-    preorder_travesal(&root);
-
-    printf("Answer: %d\n", calc_stack());
-
+    freopen("input.txt", "r", stdin);
+    for (int test_case = 1; test_case <= 10; ++test_case) {
+        int len, i, j;
+        string str;
+        scanf("%d", &len);
+        scanf(" %s", str);
+        fill_stack(str);
+        printf("#%d %d\n", test_case, calc_stack());
+    }
     return 0;
 }
