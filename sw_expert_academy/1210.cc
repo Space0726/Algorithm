@@ -1,15 +1,12 @@
 #include <iostream>
-#include <cstdio>
-#include <vector>
 
 using namespace std;
 
 int main() {
-    freopen("1210_input.txt", "r", stdin);
     for (int t = 0; t < 10; t++) {
         int test_case, i, j, ans;
         cin >> test_case;
-        vector<vector<int>> v(100, vector<int>(100));
+        int v[100][100] = {0,};
         for (i = 0; i < 100; i++) {
             for (j = 0; j < 100; j++) {
                 cin >> v[i][j];
