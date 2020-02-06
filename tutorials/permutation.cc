@@ -39,10 +39,10 @@ void perm2(int n, int r, int k) {
 }
 // 12, 13, 21, 23, 32, 31
 
-bool visited[3 - 1]; // n - 1, integer 변수 하나로 비트연산하여 대신할 수 있음
 // k = 0
+bool visited[3 - 1]; // n - 1, integer 변수 하나로 비트연산하여 대신할 수 있음
 void perm3(int n, int r, int k) {
-	if (k == n)
+	if (k == r)
 		print_arr();
 	else
 		for (int i = 0; i < n - 1; i++) {
@@ -57,5 +57,7 @@ void perm3(int n, int r, int k) {
 // 12, 13, 21, 23, 31, 32
 
 int main() {
-	perm(3, 2);
+    perm(3, 2);
+    // perm2(3, 2, 0);
+    // perm3(3, 2, 0);
 }
