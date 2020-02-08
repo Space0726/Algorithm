@@ -3,8 +3,8 @@
 
 using namespace std;
 
-int a[3] = { 1, 2, 3 };
-int t[2];
+int a[5] = { 1, 2, 3, 4, 5 };
+int t[3] = {0,};
 
 void print_arr() {
 	for (int a : t)
@@ -31,10 +31,10 @@ void perm2(int n, int r, int k) {
 	if (k == r)
 		print_arr();
 	else
-		for (int i = k; i < n - 1; i++) {
-			swap(k, i);
+		for (int i = k; i < n; i++) {
+			swap(t[k], a[i]);
 			perm2(n, r, k + 1);
-			swap(k, i);
+			swap(t[k], a[i]);
 		}
 }
 // 12, 13, 21, 23, 32, 31
@@ -57,7 +57,7 @@ void perm3(int n, int r, int k) {
 // 12, 13, 21, 23, 31, 32
 
 int main() {
-    perm(3, 2);
-    // perm2(3, 2, 0);
+    perm(5, 3);
+    // perm2(5, 3, 0);
     // perm3(3, 2, 0);
 }
