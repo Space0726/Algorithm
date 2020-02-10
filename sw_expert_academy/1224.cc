@@ -1,64 +1,73 @@
-#include <cstdio>
-#include <vector>
+#include <iostream>
 #include <string>
+#include <stack>
 
 using namespace std;
 
-vector<string> stack;
+string str;
+string post_order;
 
 int calc_stack() {
-    int ret;
-    vector<string> buf;
-    string ele, x, y;
-
-    while (stack.empty()) {
-        ele = *stack.end();
-        stack.pop_back();
-        if (ele[0] == '+') {
-            x = *buf.end();
-            buf.pop_back();
-            y = *buf.end();
-            buf.pop_back();
-            stack.push_back(to_string(atoi(x.c_str()) + atoi(y.c_str())));
-        } else if (ele[0] == '*') {
-            x = *buf.end();
-            buf.pop_back();
-            y = *buf.end();
-            buf.pop_back();
-            stack.push_back(to_string(atoi(x.c_str()) * atoi(y.c_str())));
-        } else {
-            buf.push_back(ele);
+    int x, y;
+    stack<int> result;
+    for (int i = 0; i < post_order.length(); ++i) {
+        switch (post_order[i]) {
+        case '+': case '*':
+            y = result.top(); result.pop();
+            x = result.top(); result.pop();
+            if (post_order[i] == '+')
+                result.push(x + y);
+            else
+                result.push(x * y);
+            break;
+        default:
+            result.push(post_order[i] - 48);
+            break;
         }
     }
-
-    return ret;
+    return result.top();
 }
 
-void fill_stack(string str) {
-    for (int i = 0; i < str.length; i++) {
-        if (str[i] == '(') {
-            ;
-        }
-        else if (str[i] == ')') {
-            ;
-        }
-        else if (str[i] == '+' || str[i] == '*') {
-            ;
-        }
-        else {
-            ;
+void fill_stack() {
+    stack<char> tmp;
+    for (int i = 0; i < str.length(); ++i) {
+        switch (str[i]) {
+        case '+':
+            if (!tmp.empty())
+                while (tmp.top() == '*') {
+                    post_order += tmp.top();
+                    tmp.pop();
+                    if (tmp.empty())
+                        break;
+                }
+        case '*': case '(':
+            tmp.push(str[i]);
+            break;
+        case ')':
+            while (tmp.top() != '(') {
+                post_order += tmp.top();
+                tmp.pop();
+            }
+            tmp.pop();
+            break;
+        default:
+            post_order += str[i];
+            break;
         }
     }
+    if (!tmp.empty())
+        while (tmp.empty()) {
+            post_order += tmp.top();
+            tmp.pop();
+        }
 }
 
 int main() {
-    freopen("input.txt", "r", stdin);
     for (int test_case = 1; test_case <= 10; ++test_case) {
-        int len, i, j;
-        string str;
-        scanf("%d", &len);
-        scanf(" %s", str);
-        fill_stack(str);
+        int len;
+        post_order = "";
+        cin >> len >> str;
+        fill_stack();
         printf("#%d %d\n", test_case, calc_stack());
     }
     return 0;

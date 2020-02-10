@@ -61,25 +61,8 @@ void dup_comb2(int n, int r, int k, int s) {
 		}
 }
 
-void permutation(int n, int r, int k) {
-	if (k == r) {
-		print_tmp();
-	}
-	else {
-		for (int i = k; i < n; ++i) {
-			if (visited & (1 << i))
-				continue;
-			swap(tmp[k], arr[i]);
-			visited |= (1 << i);
-			permutation(n, r, k + 1);
-			swap(tmp[k], arr[i]);
-			visited &= ~(1 << i);
-		}
-	}
-}
-
 int main(int argc, char **argv) {
-	permutation(5, 3, 0);
+	dup_comb(5, 3);
 
 	return 0;
 }
