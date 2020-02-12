@@ -3,64 +3,51 @@
 
 using namespace std;
 
+union NodeValue {
+    int number;
+    char ch;
+};
+
 struct Node {
     int num;
-    char op;
+    bool is_ch;
+    NodeValue val;
     int left;
     int right;
 };
+
+int result;
 vector<Node> v;
 
-void post_order(int k) {
-    if (v[k].left)
-        post_order(v[k].left);
-    if (v[k].right)
-        post_order(v[k].right);
-    switch (v[k].op) {
-    case '+':
-        v[k].num = v[v[k].left].num + v[v[k].right].num;
-        break;
-    case '-':
-        v[k].num = v[v[k].left].num - v[v[k].right].num;
-        break;
-    case '*':
-        v[k].num = v[v[k].left].num * v[v[k].right].num;
-        break;
-    case '/':
-        v[k].num = v[v[k].left].num / v[v[k].right].num;
-        break;
-    default:
+void operate(int idx) {
+    if (v[idx].is_ch) {
+        operate(v[idx].left-1);
+        operate(v[idx].right-1);
+    } else
         return;
-    }
 }
 
-bool is_op(char *str) {
-    int cnt = 0;
-    for (; *str; ++str)
-        if (*str == ' ' && ++cnt > 1)
-            return true;
-    return false;
-}
-
-int main() {
-    for (int test_case = 1; test_case <= 10; ++test_case) {
-        int n, tmp;
-        char str[20];
+int main(int argc, char **argv) {
+    freopen("input_1232.txt", "r", stdin);
+    for (int test_case = 1; test_case <= 2; ++test_case) {
+        int n, i, t;
+        Node tmp;
         scanf("%d", &n);
-        v = vector<Node>(n + 1);
-        for (int i = 1; i <= n; ++i) {
-            scanf(" %[^\n]", str);
-            if (is_op(str)) {
-                sscanf(str, "%d %c %d %d", &tmp, &v[i].op, &v[i].left, &v[i].right);
+        v = vector<Node>(n);
+        result = 0;
+        for (i = 0; i < n; ++i) {
+            if (i < n/2) {
+                tmp.is_ch = true;
+                scanf("%d %c %d %d", &tmp.num, &tmp.val.ch, &tmp.left, &tmp.right);
             } else {
-                sscanf(str, "%d %d", &tmp, &v[i].num);
-                v[i].op = 0;
-                v[i].left = 0;
-                v[i].right = 0;
+                tmp.is_ch = false;
+                scanf("%d %d", &tmp.num, &tmp.val.number);
+                tmp.left = tmp.right = -1;
             }
+            v[i] = tmp;
         }
-        post_order(1);
-        printf("#%d %d\n", test_case, v[1].num);
+        printf("#%d ", test_case);
+        operate(0);
     }
 
     return 0;
