@@ -1,35 +1,40 @@
-#include <iostream>
+#include <cstdio>
 #include <vector>
-#include <set>
+#include <cstring>
 
 using namespace std;
 
-int n;
-vector<int> v;
-set<int> s;
+bool check[10001];
+vector<int> scores;
 
-void subset(int k, int sum) {
-    if (k == n) {
-        s.insert(sum);
-    } else {
-        sum += v[k];
-        subset(k + 1, sum);
-        sum -= v[k];
-        subset(k + 1, sum);
-    }
+void init() {
+    scores = vector<int>(1, 0);
+    memset(check, false, sizeof(check));
+    check[0] = true;
 }
 
 int main() {
-    freopen("input_3752.txt", "r", stdin);
     int t;
     scanf("%d", &t);
     for (int test_case = 1; test_case <= t; ++test_case) {
+        int n, num, size;
         scanf("%d", &n);
-        v = vector<int>(n);
-        for (int i = 0; i < n; ++i)
-            scanf("%d", &v[i]);
-        subset(0, 0);
-        printf("#%d %lu\n", test_case, s.size());
+        init();
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &num);
+            size = scores.size();
+            if (!check[num]) {
+                scores.push_back(num);
+                check[num] = true;
+            }
+            for (int j = 1; j < size; ++j) {
+                if (!check[scores[j] + num]) {
+                    scores.push_back(scores[j] + num);
+                    check[scores[j] + num] = true;
+                }
+            }
+        }
+        printf("#%d %lu\n", test_case, scores.size());
     }
     return 0;
 }
