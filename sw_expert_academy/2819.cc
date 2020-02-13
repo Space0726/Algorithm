@@ -17,7 +17,6 @@ void dfs(int x, int y, int k) {
         for (int i = 0; i < 7; ++i)
             t += tmp[i];
         s.insert(t);
-        // cout << tmp << endl;
     } else {
         tmp[k] = board[x][y];
         for (int i = 0; i < 4; ++i) {
@@ -29,13 +28,13 @@ void dfs(int x, int y, int k) {
 }
 
 int main() {
-    freopen("input_2819.txt", "r", stdin);
     int T;
     scanf("%d ", &T);
     for (int test_case = 1; test_case <= T; ++test_case) {
         board = vector<vector<char>>(4, vector<char>(4));
+        s = set<string>();
         for (int i = 0; i < 4; ++i)
-            scanf("%c %c %c %c", &board[i][0], &board[i][1], &board[i][2], &board[i][3]);
+            scanf(" %c %c %c %c", &board[i][0], &board[i][1], &board[i][2], &board[i][3]);
         for (int i = 0; i < 4; ++i)
             for (int j = 0; j < 4; ++j)
                 dfs(i, j, 0);
