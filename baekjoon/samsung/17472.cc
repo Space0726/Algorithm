@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream>
 #include <vector>
 #include <set>
 #include <queue>
@@ -34,14 +34,9 @@ struct LandSet {
         this->parent = p;
     }
     int find_root() {
-        if (this->parent == NULL)
-            return this->num;
+        if (parent == NULL)
+            return num;
         return parent->find_root();
-    }
-    int get_depth() {
-        if (this->parent == NULL)
-            return 1;
-        return parent->get_depth() + 1;
     }
 };
 
@@ -125,109 +120,71 @@ void find_lands() {
 }
 
 void calc_weights() {
-    int size = land_info.size(), cnt;
+    int size = land_info.size();
     weights = vector<vector<int>>(size, vector<int>(size));
     for (int i = 0; i < size; ++i) {
         Land cur = land_info[i];
         int cur_num = cur.num - 1;
-        bool is_end;
         for (int k = 0; k < 4; ++k) {
-            is_end = false;
             switch (k) {
                 case 0:
-                    for (int x = cur.br.first + 1; x < n; ++x) {
-                        cnt = 0;
-                        for (int y = cur.tl.second; y <= cur.br.second; ++y) {
+                    for (int y = cur.tl.second; y <= cur.br.second; ++y) {
+                        for (int x = cur.br.first + 1; x < n; ++x) {
                             if (map[x][y]) {
                                 if (!weights[cur_num][map[x][y] - 1]) {
                                     if (x - cur.br.first - 1 >= 2) {
                                         weights[cur_num][map[x][y] - 1] = weights[map[x][y] - 1][cur_num] = x - cur.br.first - 1;
                                         edges.push_back(Edge(make_pair(cur_num, map[x][y] - 1), x - cur.br.first - 1));
                                     }
-                                    else {
-                                        weights[cur_num][map[x][y] - 1] = weights[map[x][y] - 1][cur_num] = 1;
-                                    }
                                 }
-                                if (++cnt == cur.br.second - cur.tl.second + 1) {
-                                    is_end = true;
-                                    break;
-                                }
+                                break;
                             }
                         }
-                        if (is_end)
-                            break;
                     }
                     break;
                 case 1:
-                    for (int x = cur.tl.first - 1; x >= 0; --x) {
-                        cnt = 0;
-                        for (int y = cur.tl.second; y <= cur.br.second; ++y) {
+                    for (int y = cur.tl.second; y <= cur.br.second; ++y) {
+                        for (int x = cur.tl.first - 1; x >= 0; --x) {
                             if (map[x][y]) {
                                 if (!weights[cur_num][map[x][y] - 1]) {
                                     if (cur.tl.first - x - 1 >= 2) {
                                         weights[cur_num][map[x][y] - 1] = weights[map[x][y] - 1][cur_num] = cur.tl.first - x - 1;
                                         edges.push_back(Edge(make_pair(cur_num, map[x][y] - 1), cur.tl.first - x - 1));
                                     }
-                                    else {
-                                        weights[cur_num][map[x][y] - 1] = weights[map[x][y] - 1][cur_num] = 1;
-                                    }
                                 }
-                                if (++cnt == cur.br.second - cur.tl.second + 1) {
-                                    is_end = true;
-                                    break;
-                                }
+                                break;
                             }
                         }
-                        if (is_end)
-                            break;
                     }
                     break;
                 case 2:
-                    for (int y = cur.br.second + 1; y < m; ++y) {
-                        cnt = 0;
-                        for (int x = cur.tl.first; x <= cur.br.first; ++x) {
+                    for (int x = cur.tl.first; x <= cur.br.first; ++x) {
+                        for (int y = cur.br.second + 1; y < m; ++y) {
                             if (map[x][y]) {
                                 if (!weights[cur_num][map[x][y] - 1]) {
                                     if (y - cur.br.second - 1 >= 2) {
                                         weights[cur_num][map[x][y] - 1] = weights[map[x][y] - 1][cur_num] = y - cur.br.second - 1;
                                         edges.push_back(Edge(make_pair(cur_num, map[x][y] - 1), y - cur.br.second - 1));
                                     }
-                                    else {
-                                        weights[cur_num][map[x][y] - 1] = weights[map[x][y] - 1][cur_num] = 1;
-                                    }
                                 }
-                                if (++cnt == cur.br.first - cur.tl.first + 1) {
-                                    is_end = true;
-                                    break;
-                                }
+                                break;
                             }
                         }
-                        if (is_end)
-                            break;
                     }
                     break;
                 case 3:
-                    for (int y = cur.tl.second - 1; y >= 0; --y) {
-                        cnt = 0;
-                        for (int x = cur.tl.first; x <= cur.br.first; ++x) {
+                    for (int x = cur.tl.first; x <= cur.br.first; ++x) {
+                        for (int y = cur.tl.second - 1; y >= 0; --y) {
                             if (map[x][y]) {
                                 if (!weights[cur_num][map[x][y] - 1]) {
-                                    if (cur.tl.second - x - 1 >= 2) {
-                                        weights[cur_num][map[x][y] - 1] = weights[map[x][y] - 1][cur_num] = cur.tl.second - x - 1;
-                                        edges.push_back(Edge(make_pair(cur_num, map[x][y] - 1), cur.tl.second - x - 1));
-                                    }
-                                    else {
-                                        weights[cur_num][map[x][y] - 1] = weights[map[x][y] - 1][cur_num] = 1;
+                                    if (cur.tl.second - y - 1 >= 2) {
+                                        weights[cur_num][map[x][y] - 1] = weights[map[x][y] - 1][cur_num] = cur.tl.second - y - 1;
+                                        edges.push_back(Edge(make_pair(cur_num, map[x][y] - 1), cur.tl.second - y - 1));
                                     }
                                 }
-                                if (++cnt == cur.br.first - cur.tl.first + 1) {
-                                    is_end = true;
-                                    break;
-                                }
+                                break;
                             }
                         }
-                        if (is_end)
-                            break;
                     }
                     break;
             }
@@ -238,7 +195,8 @@ void calc_weights() {
 void kruskal() {
     sort(edges.begin(), edges.end(), [](auto &a, auto &b) { return a.weight < b.weight; });
     vector<LandSet> land_set;
-    int land_size = land_info.size();
+    int land_size = land_info.size(), cnt = 1;
+    bool success = false;
     for (int i = 0; i < land_size; ++i)
         land_set.push_back(LandSet(i, NULL));
     int sum = 0;
@@ -250,11 +208,16 @@ void kruskal() {
         else {
             sum += edges[i].weight;
             land_set[to].parent = &land_set[from];
+            ++cnt;
         }
-        if (land_set[0].get_depth() == land_size)
+        if (cnt == land_size) {
+            success = true;
             break;
+        }
     }
-    if (min_len > sum)
+    if (!success)
+        min_len = -1;
+    else if (min_len > sum)
         min_len = sum;
 }
 
@@ -268,7 +231,5 @@ int main() {
     find_lands();
     calc_weights();
     kruskal();
-    if (!min_len)
-        min_len = -1;
     printf("%d", min_len);
 }
