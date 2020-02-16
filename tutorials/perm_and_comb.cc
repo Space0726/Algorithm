@@ -14,6 +14,20 @@ void print_tmp() {
 	putchar('\n');
 }
 
+void comb_recur(int n, int r) {
+    if (r == 0) {
+        for (int i = 0; i < 2; ++i)
+            printf("%d ", a[i]);
+        putchar('\n');
+        return;
+    } else if (n == 0) {
+        return;
+    }
+    a[r - 1] = n;
+    comb_recur(n - 1, r - 1);
+    comb_recur(n - 1, r);
+}
+
 // C(n, r) = C(n - 1, r - 1) + C(n - 1, r)
 void comb(int n, int r) {
 	if (r == 0) print_tmp();
