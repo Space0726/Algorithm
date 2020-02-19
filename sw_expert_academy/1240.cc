@@ -3,8 +3,14 @@
 
 using namespace std;
 
+struct Trie {
+    int num;
+    int next[2];
+}
+
 int n, m, start;
 vector<vector<char>> v;
+Trie root[];
 
 int is_valid(char *str) {
 
