@@ -59,10 +59,11 @@ void perm2(int n, int r, int k) {
 // k = 0
 bool visited[3 - 1]; // n - 1, integer 변수 하나로 비트연산하여 대신할 수 있음
 void perm3(int n, int r, int k) {
-	if (k == r)
+	if (k == r) {
 		print_arr();
+    }
 	else
-		for (int i = 0; i < n - 1; i++) {
+		for (int i = 0; i < n; i++) {
 			if (visited[i])
 				continue;
 			t[k] = a[i];
@@ -76,5 +77,5 @@ void perm3(int n, int r, int k) {
 int main() {
     perm(5, 3);
     // perm2(5, 3, 0);
-    // perm3(3, 2, 0);
+    // perm3(5, 3, 0);
 }

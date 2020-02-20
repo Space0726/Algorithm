@@ -51,8 +51,8 @@ void comb2(int n, int r, int k, int s) {
 void dup_perm(int n, int r) {
 	if (r == 0) print_tmp();
 	else
-		for (int i = 0; i < n; i++) {
-
+		for (int i = n - 1; i >= n; --i) {
+            // perm과 동일
 		}
 }
 
@@ -67,7 +67,7 @@ void dup_comb(int n, int r) {
 }
 
 void dup_comb2(int n, int r, int k, int s) {
-	if (r == 0) print_tmp();
+	if (k == r) print_tmp();
 	else
 		for (int i = s; i <= n; i++) {
 			tmp[k] = arr[i];
