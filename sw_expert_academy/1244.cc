@@ -3,7 +3,7 @@
 using namespace std;
 
 char number[7];
-int num_len, change_cnt;
+int len, change_cnt, max_num;
 
 int strlen(char *s) {
     int cnt = 0;
@@ -22,39 +22,46 @@ int pow(int n, int s) {
     return pow(n, s / 2) * pow(n, s / 2);
 }
 
-int greedy() {
-    int max_t, cnt = 0, ret = 0;
-    char t;
-    for (int i = 0; i < num_len; ++i) {
-        max_t = i;
-        for (int j = i + 1; j < num_len; ++j)
-            if (number[max_t] <= number[j])
-                max_t = j;
-        if (i == max_t) {
-            continue;
-        } else {
-            t = number[i];
-            number[i] = number[max_t];
-            number[max_t] = t;
-            printf("changed: %s\n", number);
-            if (++cnt == change_cnt)
-                break;
-        }
-    }
-    for (int i = 1; i <= num_len; ++i)
-        ret += (number[i - 1] - '0') * pow(10, num_len - i);
+int stoi(char *str) {
+    int ret = 0;
+    for (int i = 1; i <= len; ++i)
+        ret += (str[i - 1] - '0') * pow(10, len - i);
     return ret;
 }
 
+void swap(char *a, char *b) {
+    char t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int perm(int n, int cnt) {
+    if (cnt == change_cnt) {
+        int num = stoi(number);
+        if (max_num < num)
+            max_num = num;
+    } else {
+        for (int i = n; i < len; ++i) {
+            for (int j = i + 1; j < len; ++j) {
+                if (number[i] <= number[j]) {
+                    swap(number + i, number + j);
+                    perm(i, cnt + 1);
+                    swap(number + i, number + j);
+                }
+            }
+        }
+    }
+}
+
 int main() {
-    freopen("input_1244.txt", "r", stdin);
     int t;
     scanf("%d", &t);
     for (int test_case = 1; test_case <= t; ++test_case) {
         scanf(" %s%d", number, &change_cnt);
-        num_len = strlen(number);
-        // printf("%s\n", number);
-        printf("#%d %d\n", test_case, greedy());
+        len = strlen(number);
+        max_num = 0;
+        perm(0, 0);
+        printf("#%d %d\n", test_case, max_num);
     }
     return 0;
 }
