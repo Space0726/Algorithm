@@ -1,5 +1,5 @@
 #include <iostream>
-#include <stack>
+#include <queue>
 #include <vector>
 
 using namespace std;
@@ -10,15 +10,15 @@ int dy[4] = {1, 0, -1, 0};
 vector<vector<int>> map;
 vector<vector<int>> min_steps;
 
-void dfs() {
+void bfs() {
     int x, y, xx, yy, cur_step;
     bool is_push;
-    stack<pair<int, int>> st;
-    st.push({0, 0});
+    queue<pair<int, int>> q;
+    q.push({0, 0});
     min_steps[0][0] = 0;
-    while(!st.empty()) {
-        x = st.top().first;
-        y = st.top().second;
+    while(!q.empty()) {
+        x = q.front().first;
+        y = q.front().second;
         cur_step = min_steps[x][y];
         is_push = false;
         for (int i = 0; i < 4; ++i) {
@@ -31,16 +31,16 @@ void dfs() {
             min_steps[xx][yy] = cur_step + map[xx][yy];
             if (xx == n-1 && yy == n-1)
                 continue;
-            st.push({xx, yy});
+            q.push({xx, yy});
             is_push = true;
         }
-        if (!is_push)
-            st.pop();
+        q.pop();
+        if (is_push)
+            q.push({x, y});
     }
 }
 
 int main() {
-    freopen("input_1249.txt", "r", stdin);
     int t;
     scanf("%d", &t);
     for (int test_case = 1; test_case <= t; ++test_case) {
@@ -56,7 +56,7 @@ int main() {
             }
         }
         min_steps = vector<vector<int>>(n, vector<int>(n, tmp));
-        dfs();
+        bfs();
         printf("#%d %d\n", test_case, min_steps[n-1][n-1]);
     }
     return 0;
