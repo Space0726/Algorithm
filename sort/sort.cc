@@ -7,11 +7,13 @@ void print_vector(vector<int> &v);
 void bubble_sort(vector<int> &v);
 void selection_sort(vector<int> &v);
 void insertion_sort(vector<int> &v);
-void quick_sort(vector<int> &v, int a, int b);
+void quick_sort(vector<int> &v, int left, int right);
+void merge_sort(vector<int> &v, int left, int right, vector<int> &t);
 
 int main(void) {
     vector<int> numbers = {4,2,6,7,8,3,5,1,9,0};
-    quick_sort(numbers, 0, numbers.size() - 1);
+    vector<int> tmp(10);
+    merge_sort(numbers, 0, numbers.size() - 1, tmp);
     return 0;
 }
 
@@ -21,7 +23,7 @@ void print_vector(vector<int> &v) {
     cout << endl;
 }
 
-// Best: O(n), Worst: O(n^2)
+// Best: O(n), Worst: O(n^2), Stable
 void bubble_sort(vector<int> &v) {
     int temp;
     print_vector(v);
@@ -40,7 +42,7 @@ void bubble_sort(vector<int> &v) {
     }
 }
 
-// Best: O(n^2), Worst: O(n^2)
+// Best: O(n^2), Worst: O(n^2), Unstable
 void selection_sort(vector<int> &v) {
     int temp;
     int min;
@@ -60,7 +62,7 @@ void selection_sort(vector<int> &v) {
     }
 }
 
-// Best: O(n), Worst: O(n^2)
+// Best: O(n), Worst: O(n^2), Stable
 void insertion_sort(vector<int> &v) {
     int temp;
     print_vector(v);
@@ -102,7 +104,7 @@ int partition(vector<int> &v, int left, int right) {
     return i;
 }
 
-// Best: O(nlogn), Worst: O(n^2)
+// Best: O(nlogn), Worst: O(n^2), Unstable
 void quick_sort(vector<int> &v, int left, int right) {
     if (left >= right)
         return;
@@ -121,4 +123,31 @@ void quick_sort(vector<int> &v, int left, int right) {
     print_vector(v);
     quick_sort(v, left, i - 1);
     quick_sort(v, i + 1, right);
+}
+
+// Best: O(nlogn), Worst: O(nlogn), Stable
+void merge_sort(vector<int> &v, int left, int right, vector<int> &t) {
+    if (left >= right)
+        return;
+
+    int mid = (left + right) / 2;
+    merge_sort(v, left, mid, t);
+    merge_sort(v, mid + 1, right, t);
+
+    int i = left, j = mid + 1;
+    for (int k = left; k <= right; ++k) {
+        if (j > right)
+            t[k] = v[i++];
+        else if (i > mid)
+            t[k] = v[j++];
+        else if (v[i] < v[j])
+            t[k] = v[i++];
+        else
+            t[k] = v[j++];
+    }
+
+    print_vector(v);
+    for (i = left; i <= right; ++i)
+        v[i] = t[i];
+    print_vector(v);
 }
