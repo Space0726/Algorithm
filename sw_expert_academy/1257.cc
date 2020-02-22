@@ -18,13 +18,15 @@ int main() {
             for (int i = 0; i < tmp.size() - j + 1; ++i)
                 strs.insert(tmp.substr(i, j));
         cnt = 0;
-        cout << "#" << test_case << " ";
+        printf("#%d ", test_case);
         if (k > strs.size())
-            cout << "none\n";
+            printf("none\n");
         else
             for (auto it = strs.begin(); it != strs.end(); ++it)
-                if (++cnt == k)
+                if (++cnt == k) {
                     cout << *it << '\n';
+                    break;
+                }
     }
     return 0;
 }
