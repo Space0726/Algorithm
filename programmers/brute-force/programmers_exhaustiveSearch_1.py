@@ -1,12 +1,12 @@
 '''
 def first_solution(answers):
-	m = [[1,2,3,4,5], [2,1,2,3,2,4,2,5], [3,3,1,1,2,2,4,4,5,5]]
-	a = []
-	for i in range(3):
-		if len(answers) > len(m[i]):
-			m[i] *= (len(answers) // len(m[i])) + 1
-		a.append(sum(map(lambda x: 1 if x[0] == x[1] else 0, zip(answers, m[i]))))
-	return [i + 1 for i, x in enumerate(a) if x == max(a)]
+    m = [[1,2,3,4,5], [2,1,2,3,2,4,2,5], [3,3,1,1,2,2,4,4,5,5]]
+    a = []
+    for i in range(3):
+        if len(answers) > len(m[i]):
+            m[i] *= (len(answers) // len(m[i])) + 1
+        a.append(sum(map(lambda x: 1 if x[0] == x[1] else 0, zip(answers, m[i]))))
+    return [i + 1 for i, x in enumerate(a) if x == max(a)]
 '''
 
 def solution(answers):

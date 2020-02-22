@@ -12,9 +12,9 @@ print(str(int(''.join(map(str, numbers3)))))
 '''
 
 def solution(numbers):
-	maxLength = len(str(max(numbers)))
-	numbers.sort(key=lambda x: (str(x)*((maxLength // len(str(x))) + 1))[:maxLength], reverse=True)
-	answer = functools.reduce(lambda x, y: str(x) + str(y), numbers)
-	# The following is also possible, but the excution speed is slower than the above case.
-	# answer = str(int(''.join(map(str, numbers))))
-	return answer if int(answer) else '0'
+    maxLength = len(str(max(numbers)))
+    numbers.sort(key=lambda x: (str(x)*((maxLength // len(str(x))) + 1))[:maxLength], reverse=True)
+    answer = functools.reduce(lambda x, y: str(x) + str(y), numbers)
+    # The following is also possible, but the excution speed is slower than the above case.
+    # answer = str(int(''.join(map(str, numbers))))
+    return answer if int(answer) else '0'
