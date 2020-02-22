@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 
 using namespace std;
 
@@ -20,6 +19,36 @@ int map[100][100];
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
 Matrix mats[20];
+
+void swap(int a, int b) {
+    Matrix t = mats[a];
+    mats[a] = mats[b];
+    mats[b] = t;
+}
+
+bool compare_matrix(int a, int b) {
+    if (mats[a].r * mats[a].c == mats[b].r * mats[b].c)
+        return mats[a].r < mats[b].r;
+    return mats[a].r * mats[a].c < mats[b].r * mats[b].c;
+}
+
+void quick_sort(int left, int right) {
+    if (left >= right)
+        return;
+
+    swap(left, (left + right) / 2);
+    int i = left, j = right + 1;
+
+    while (i < j) {
+        while (compare_matrix(left, --j));
+        while (i < j && !compare_matrix(left, ++i));
+        if (i < j) swap(i, j);
+    }
+
+    swap(left, i);
+    quick_sort(left, i - 1);
+    quick_sort(i + 1, right);
+}
 
 void bfs() {
     int xx, yy, min_r, max_r, min_c, max_c, f, r;
@@ -73,12 +102,7 @@ int main() {
             for (int j = 0; j < n; ++j)
                 scanf("%d", &map[i][j]);
         bfs();
-        sort(mats, mats + mat_num,
-             [](const Matrix &a, const Matrix &b) {
-                 if (a.r*a.c == b.r*b.c)
-                     return a.r < b.r;
-                 return a.r*a.c < b.r*b.c;
-             });
+        quick_sort(0, mat_num - 1);
         printf("#%d %d ", test_case, mat_num);
         for (int i = 0; i < mat_num; ++i)
             printf("%d %d ", mats[i].r, mats[i].c);
