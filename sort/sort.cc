@@ -140,7 +140,7 @@ void merge_sort(vector<int> &v, int left, int right, vector<int> &t) {
             t[k] = v[i++];
         else if (i > mid)
             t[k] = v[j++];
-        else if (v[i] < v[j])
+        else if (v[i] <= v[j])  // This = makes sorting stable
             t[k] = v[i++];
         else
             t[k] = v[j++];
