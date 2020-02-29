@@ -1,11 +1,5 @@
 import collections
 
-class graph:
-    def __init__(self, gdict=None):
-        if gdict is None:
-            gdict = {}
-        self.gdict = gdict
-
 def dfs(graph, start, visited=None):
     if visited is None:
         visited = set()
