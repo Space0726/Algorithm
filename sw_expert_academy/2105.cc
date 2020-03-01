@@ -17,31 +17,41 @@ void find_max_num() {
                 for (int b = 1; b <= n-1-j; ++b) {
                     cnt = 0;
                     ++cur;
-                    rx = i; ry = j; lx = i + 2*a; lx = j;
+                    rx = i + a; ry = j + b; lx = i + a; ly = j - b;
+                    cout << "Right:" << endl;
+                    cout << "rx: " << rx << ", ry: " << ry << endl;
+                    cout << "lx: " << lx << ", ly: " << ly << endl;
                     for (int c = 0; c < a; ++c) {
-                        rx += dx[0]; ry += dy[0];
-                        if (is_wall(rx, ry) || check[map[rx][ry] - 1] == cur)
-                            goto next;
-                        ++cnt;
-                        check[map[rx][ry] - 1] = cur;
-
-                        lx += dx[1]; ly += dy[1];
-                        if (is_wall(lx, ly) || check[map[lx][ly] - 1] == cur)
-                            goto next;
-                        ++cnt;
-                        check[map[lx][ly] - 1] = cur;
-                    }
-                    rx = i + a; ry = j + b; lx = i + a; lx = j - b;
-                    for (int c = 0; c < b; ++c) {
                         rx += dx[2]; ry += dy[2];
                         if (is_wall(rx, ry) || check[map[rx][ry] - 1] == cur)
                             goto next;
+                        cout << "rx: " << rx << ", ry: " << ry << endl;
                         ++cnt;
                         check[map[rx][ry] - 1] = cur;
 
                         lx += dx[3]; ly += dy[3];
                         if (is_wall(lx, ly) || check[map[lx][ly] - 1] == cur)
                             goto next;
+                        cout << "lx: " << lx << ", ly: " << ly << endl;
+                        ++cnt;
+                        check[map[lx][ly] - 1] = cur;
+                    }
+                    rx = i; ry = j; lx = i + 2*a; ly = j;
+                    cout << "Left:" << endl;
+                    cout << "rx: " << rx << ", ry: " << ry << endl;
+                    cout << "lx: " << lx << ", ly: " << ly << endl;
+                    for (int c = 0; c < b; ++c) {
+                        rx += dx[0]; ry += dy[0];
+                        if (is_wall(rx, ry) || check[map[rx][ry] - 1] == cur)
+                            goto next;
+                        cout << "rx: " << rx << ", ry: " << ry << endl;
+                        ++cnt;
+                        check[map[rx][ry] - 1] = cur;
+
+                        lx += dx[1]; ly += dy[1];
+                        if (is_wall(lx, ly) || check[map[lx][ly] - 1] == cur)
+                            goto next;
+                        cout << "lx: " << lx << ", ly: " << ly << endl;
                         ++cnt;
                         check[map[lx][ly] - 1] = cur;
                     }
@@ -59,7 +69,7 @@ int main() {
     freopen("input_2105.txt", "r", stdin);
     int T;
     scanf("%d", &T);
-    for (int test_case = 1; test_case <= T; ++test_case) {
+    for (int test_case = 1; test_case <= 1; ++test_case) {
         max_num = -1;
         scanf("%d", &n);
         for (int i = 0; i < n; ++i)
