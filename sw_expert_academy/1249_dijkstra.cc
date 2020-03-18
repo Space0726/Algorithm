@@ -48,7 +48,6 @@ void dijkstra() {
     }
 }
 
-
 int main() {
     int T;
     char tmp;
