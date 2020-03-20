@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int N, w[12][12], coord[12][2], dist[10][10240];
+int N, w[12][12], coord[12][2], dist[10][1 << 10];
 
 inline int abs(int a) { return a < 0 ? -a : a; }
 
@@ -11,10 +11,6 @@ inline int distance(int sx, int sy, int ex, int ey) {
 }
 
 inline int min(int a, int b) { return a < b ? a : b; }
-
-void subset(int n) {
-    ;
-}
 
 int travel() {
     int i, j, k;
