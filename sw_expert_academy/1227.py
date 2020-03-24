@@ -21,7 +21,6 @@ def move(miro, x, y):
             miro[mx][my] = '2'
             visited.append((mx, my))
     return 0
-        
 
 with open("1227_input.txt") as f:
     case = f.readline()[:-1]
