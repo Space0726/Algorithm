@@ -4,8 +4,8 @@
 
 using namespace std;
 
-vector<vector<string> > parse(string s) {
-    vector<vector<string> > ret;
+vector<vector<string>> parse(string s) {
+    vector<vector<string>> ret;
     vector<string> t;
     string tmp;
     bool pushed = false;
@@ -39,8 +39,9 @@ bool is_inside(vector<int> &v, int a) {
 
 vector<int> solution(string s) {
     vector<int> answer;
-    vector<vector<string> > vvs = parse(s.substr(1, s.size() - 2));
-    sort(vvs.begin(), vvs.end(), [](const vector<string> &a, const vector<string> &b) { return a.size() < b.size(); });
+    vector<vector<string>> vvs = parse(s.substr(1, s.size() - 2));
+    sort(vvs.begin(), vvs.end(),
+         [](const vector<string> &a, const vector<string> &b) { return a.size() < b.size(); });
     for (auto &a: vvs) {
         for (auto &b: a) {
             int tmp = stoi(b);
