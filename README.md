@@ -1,2 +1,1 @@
-# CodingTest
-### Programming problem solving for coding tests.
+# Algorithm Problem Solving
