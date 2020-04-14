@@ -59,13 +59,12 @@ void dup_perm(int k) {
 void comb(int k, int s) {
     if (k == r) {
         for (int i = 0; i < r; ++i)
-            printf("%d ", arr[i]);
+            printf("%d ", t[i]);
         putchar('\n');
     } else {
         for (int i = s; i <= n + (k - r); ++i) {
-            swap(k, i);
+            t[k] = i;
             comb(k + 1, i + 1);
-            swap(k, i);
         }
     }
 }
@@ -84,6 +83,6 @@ void dup_comb(int k, int s) {
 }
 
 int main() {
-    dup_comb(0, 0);
+    comb(0, 0);
     return 0;
 }
