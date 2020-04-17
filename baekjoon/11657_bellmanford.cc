@@ -4,7 +4,8 @@
 
 using namespace std;
 
-int N, M, edges[6000][3], dist[500];
+int N, M, edges[6000][3];
+long long dist[500];
 bool cycle;
 
 void BellmanFord() {
@@ -33,7 +34,7 @@ int main() {
         printf("-1");
     } else {
         for (int i = 1; i < N; ++i)
-            printf("%d\n", dist[i] == INF ? -1 : dist[i]);
+            printf("%lld\n", dist[i] == INF ? -1 : dist[i]);
     }
     return 0;
 }
