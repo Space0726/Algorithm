@@ -5,7 +5,7 @@ using namespace std;
 int n = 5, r = 3;
 int arr[5] = {1, 2, 3, 4, 5};
 int t[3] = {0,};
-bool visited[5] = {false,};
+int visited;
 
 void swap(int a, int b) {
     int t = arr[a];
@@ -34,11 +34,11 @@ void perm_order(int k) {
         putchar('\n');
     } else {
         for (int i = 0; i < n; ++i) {
-            if (visited[i]) continue;
+            if (visited & 1 << i) continue;
             t[k] = arr[i];
-            visited[i] = true;
+            visited |= 1 << i;
             perm_order(k + 1);
-            visited[i] = false;
+            visited &= ~(1 << i);
         }
     }
 }
@@ -59,11 +59,11 @@ void dup_perm(int k) {
 void comb(int k, int s) {
     if (k == r) {
         for (int i = 0; i < r; ++i)
-            printf("%d ", t[i]);
+            printf("%d ", arr[i]);
         putchar('\n');
     } else {
         for (int i = s; i <= n + (k - r); ++i) {
-            t[k] = i;
+            arr[k] = i;
             comb(k + 1, i + 1);
         }
     }
@@ -83,6 +83,6 @@ void dup_comb(int k, int s) {
 }
 
 int main() {
-    comb(0, 0);
+    perm_order(0);
     return 0;
 }
