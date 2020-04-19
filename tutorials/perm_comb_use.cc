@@ -83,6 +83,6 @@ void dup_comb(int k, int s) {
 }
 
 int main() {
-    perm_order(0);
+    comb(0, 0);
     return 0;
 }
