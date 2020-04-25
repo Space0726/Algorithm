@@ -49,7 +49,6 @@ void perm(int n) {
 }
 
 int main() {
-    freopen("input_14888.txt", "r", stdin);
     int i, j, tmp, cnt = 0;
     scanf("%d", &n);
     a = (int*) malloc(sizeof(int) * n);

@@ -32,7 +32,6 @@ void f(int i, int s){
 }
 
 int main(){
-    freopen("input_14888.txt", "r", stdin);
     scanf("%d", &N);
     for (int i = 0; i < N; i++) scanf("%d", &n[i]);
     for (int i = 0; i < 4; i++) scanf("%d", &p[i]);
