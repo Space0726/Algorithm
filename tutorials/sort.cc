@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <vector>
 
 using namespace std;
@@ -9,11 +10,12 @@ void selection_sort(vector<int> &v);
 void insertion_sort(vector<int> &v);
 void quick_sort(vector<int> &v, int left, int right);
 void merge_sort(vector<int> &v, int left, int right, vector<int> &t);
+void radix_sort(vector<int> &v, int p, int k=10);
 
 int main(void) {
-    vector<int> numbers = {4,2,6,7,8,3,5,1,9,0};
+    vector<int> numbers = {4,123,6,97,8,3,53,1,9,10};
     vector<int> tmp(10);
-    merge_sort(numbers, 0, numbers.size() - 1, tmp);
+    radix_sort(numbers, 3);
     return 0;
 }
 
@@ -150,4 +152,42 @@ void merge_sort(vector<int> &v, int left, int right, vector<int> &t) {
     for (i = left; i <= right; ++i)
         v[i] = t[i];
     print_vector(v);
+}
+
+// Best: O(d*(n + b)) / O(dn), Stable
+// d is maximum digit of numbers, b is k(=10)
+// Possible: string, integer, ...
+// Impossible: float (No digits)
+// But more memory needed
+// p is most digit number
+void radix_sort(vector<int> &v, int p, int k) {
+    int size = v.size();
+    vector<int> counts(size), temp(size);
+    int index, pval;
+    print_vector(v);
+
+    // Do counting sort by digit n
+    // Using LSD(Least Significant Digit)
+    // If use MSD(Most Significant Digit), then n is start p-1 to 0
+    for (int n = 0; n < p; ++n) {
+        for (int i = 0; i < k; ++i)
+            counts[i] = 0;
+
+        pval = (int)pow((double)k, (double)n);
+        for (int j = 0; j < size; ++j) {
+            index = (int)(v[j] / pval) % k;
+            ++counts[index];
+        }
+
+        for (int i = 1; i < k; ++i)
+            counts[i] += counts[i-1];
+
+        for (int j = size-1; j >= 0; --j) {
+            index = (int)(v[j] / pval) % k;
+            temp[counts[index] - 1] = v[j];
+            --counts[index];
+        }
+        v = temp;
+        print_vector(v);
+    }
 }
